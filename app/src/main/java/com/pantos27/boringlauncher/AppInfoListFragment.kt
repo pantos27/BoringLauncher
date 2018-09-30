@@ -2,16 +2,15 @@ package com.pantos27.boringlauncher
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pantos27.boringlauncher.adapters.MyAppInfoRecyclerViewAdapter
+import com.pantos27.boringlauncher.data.AppInfo
 
-import com.pantos27.boringlauncher.dummy.DummyContent
 import com.pantos27.boringlauncher.dummy.DummyContent.DummyItem
 
 /**
@@ -21,8 +20,12 @@ import com.pantos27.boringlauncher.dummy.DummyContent.DummyItem
  */
 class AppInfoListFragment : Fragment() {
 
+    enum class Mode{
+        Favs,Lex,Recent
+    }
+
     // TODO: Customize parameters
-    private var columnCount = 1
+    private var mode : Mode  = Mode.Lex
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -30,7 +33,7 @@ class AppInfoListFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
+            mode = it.getSerializable(ARG_MODE) as Mode
         }
     }
 
@@ -41,11 +44,8 @@ class AppInfoListFragment : Fragment() {
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyAppInfoRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                layoutManager = LinearLayoutManager(context)
+                adapter = MyAppInfoRecyclerViewAdapter(getLauncherActivities(context.packageManager), listener)
             }
         }
         return view
@@ -78,20 +78,19 @@ class AppInfoListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: AppInfo?)
     }
 
     companion object {
 
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
+        const val ARG_MODE = "fragment mode"
 
         // TODO: Customize parameter initialization
         @JvmStatic
-        fun newInstance(columnCount: Int) =
+        fun newInstance(mode: Mode) =
                 AppInfoListFragment().apply {
                     arguments = Bundle().apply {
-                        putInt(ARG_COLUMN_COUNT, columnCount)
+                        putSerializable(ARG_MODE,mode)
                     }
                 }
     }

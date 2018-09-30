@@ -1,14 +1,15 @@
 package com.pantos27.boringlauncher.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 
 import com.pantos27.boringlauncher.AppInfoListFragment.OnListFragmentInteractionListener
 import com.pantos27.boringlauncher.R
+import com.pantos27.boringlauncher.data.AppInfo
 import com.pantos27.boringlauncher.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_appinfo.view.*
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_appinfo.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class MyAppInfoRecyclerViewAdapter(
-        private val mValues: List<DummyItem>,
+        private val mValues: List<AppInfo>,
         private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<MyAppInfoRecyclerViewAdapter.ViewHolder>() {
 
@@ -27,7 +28,7 @@ class MyAppInfoRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as AppInfo
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -42,8 +43,8 @@ class MyAppInfoRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.mContentView.text = item.content
+        holder.mIdView.text = item.label
+        holder.mContentView.text = item.packageName
 
         with(holder.mView) {
             tag = item
@@ -54,7 +55,7 @@ class MyAppInfoRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
+        val mIdView: TextView = mView.app_title
         val mContentView: TextView = mView.content
 
         override fun toString(): String {

@@ -1,23 +1,17 @@
 package com.pantos27.boringlauncher
 
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.os.Bundle
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import com.pantos27.boringlauncher.dummy.DummyContent
-
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import com.google.android.material.snackbar.Snackbar
+import com.pantos27.boringlauncher.data.AppInfo
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
+
 import ua.at.tsvetkov.util.Log
 
 class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInteractionListener {
@@ -36,7 +30,7 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -74,8 +68,16 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
     //disable back presses
     override fun onBackPressed() {}
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d("onKey $event")
+        return super.onKeyUp(keyCode, event)
+    }
+
+    override fun onListFragmentInteraction(item: AppInfo?) {
         Log.d("onListFragmentInteraction: $item")
+        item?.let {
+            startMainActivityForPackage(this,item.packageName)
+        }
     }
 
     /**
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position==0) return AppInfoListFragment.newInstance(1)
+            if (position==0) return AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Lex)
             return PlaceholderFragment.newInstance(position + 1)
         }
 
