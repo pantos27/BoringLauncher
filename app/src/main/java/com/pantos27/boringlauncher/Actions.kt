@@ -5,9 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.pantos27.boringlauncher.data.AppInfo
+import android.provider.Settings
+import ua.at.tsvetkov.util.Log
 
 
 fun getActivityIcon(context: Context, packageName: String, activityName: String): Drawable {
@@ -31,4 +34,11 @@ fun getLauncherActivities(pm: PackageManager) : List<AppInfo>{
     return pm.queryIntentActivities(i, 0)
             .map { AppInfo(it.loadLabel(pm), it.activityInfo.packageName, it.activityInfo.loadIcon(pm)) }
 
+}
+
+fun gotToAppSettingsActivity(context: Context,pkg: String){
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", pkg, null))
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(context,intent,null)
 }

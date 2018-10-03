@@ -10,14 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pantos27.boringlauncher.AppInfoListFragment.OnListFragmentInteractionListener
 import com.pantos27.boringlauncher.R
 import com.pantos27.boringlauncher.data.AppInfo
-import com.pantos27.boringlauncher.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_appinfo.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
+ *
  */
 class MyAppInfoRecyclerViewAdapter(
         private val mValues: List<AppInfo>,
@@ -25,13 +22,21 @@ class MyAppInfoRecyclerViewAdapter(
     : RecyclerView.Adapter<MyAppInfoRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
+    private val mOnClickLongListener: View.OnLongClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as AppInfo
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            mListener?.onListFragmentClick(item)
+        }
+
+        mOnClickLongListener = View.OnLongClickListener { v ->
+            val item = v.tag as AppInfo
+            mListener?.onListFragmentLongPress(item)
+            //return -handled
+            true
         }
     }
 
@@ -41,6 +46,7 @@ class MyAppInfoRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.label
@@ -49,6 +55,7 @@ class MyAppInfoRecyclerViewAdapter(
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
+            setOnLongClickListener(mOnClickLongListener)
         }
     }
 

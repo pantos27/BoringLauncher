@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pantos27.boringlauncher.adapters.MyAppInfoRecyclerViewAdapter
 import com.pantos27.boringlauncher.data.AppInfo
+import ua.at.tsvetkov.util.Log
 
-import com.pantos27.boringlauncher.dummy.DummyContent.DummyItem
 
 /**
  * A fragment representing a list of Items.
@@ -31,25 +31,25 @@ class AppInfoListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d("onCreate")
         arguments?.let {
             mode = it.getSerializable(ARG_MODE) as Mode
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_appinfo_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
+            : View? = inflater.inflate(R.layout.fragment_appinfo_list, container, false)
 
-        // Set the adapter
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
+                Log.d("getLauncherActivities-pre")
                 adapter = MyAppInfoRecyclerViewAdapter(getLauncherActivities(context.packageManager), listener)
+                Log.d("getLauncherActivities-post")
             }
-        }
-        return view
-    }
+        }    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -78,7 +78,8 @@ class AppInfoListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: AppInfo?)
+        fun onListFragmentClick(item: AppInfo?)
+        fun onListFragmentLongPress(item: AppInfo?)
     }
 
     companion object {

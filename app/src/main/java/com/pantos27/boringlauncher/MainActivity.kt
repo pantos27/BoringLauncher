@@ -73,10 +73,17 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
         return super.onKeyUp(keyCode, event)
     }
 
-    override fun onListFragmentInteraction(item: AppInfo?) {
-        Log.d("onListFragmentInteraction: $item")
+    override fun onListFragmentClick(item: AppInfo?) {
+        Log.d("onListFragmentClick: $item")
         item?.let {
             startMainActivityForPackage(this,item.packageName)
+        }
+    }
+    override fun onListFragmentLongPress(item: AppInfo?) {
+        Log.d("onListFragmentLongPress $item")
+        //todo: open context menu
+        item?.let {
+            gotToAppSettingsActivity(this,item.packageName)
         }
     }
 
@@ -87,6 +94,7 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
+            Log.d("postition: $position")
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position==0) return AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Lex)
