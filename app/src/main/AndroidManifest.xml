@@ -3,26 +3,36 @@
     package="com.pantos27.boringlauncher">
 
     <application
-        android:allowBackup="true"
+        android:name=".BoringApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".BoringApplication"
         android:theme="@style/AppTheme">
         <activity
-            android:launchMode="singleInstance"
-            android:taskAffinity=""
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".PackageActionReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

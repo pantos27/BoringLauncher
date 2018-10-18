@@ -42,3 +42,7 @@ fun gotToAppSettingsActivity(context: Context,pkg: String){
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(context,intent,null)
 }
+
+fun indexNewApp(context: Context){
+    Intent.ACTION_PACKAGE_ADDED
+}
