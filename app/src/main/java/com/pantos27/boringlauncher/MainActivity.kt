@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-            Log.d("postition: $position")
+            Log.d("position: $position")
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position==0) return AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Lex)

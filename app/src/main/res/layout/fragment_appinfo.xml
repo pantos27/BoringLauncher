@@ -9,11 +9,12 @@
         android:id="@+id/app_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_margin="@dimen/text_margin"
+        android:layout_weight="1"
+        android:fontFamily="@font/overlock_sc"
+        android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="25sp"
-        tools:text="App name"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        tools:text="App name" />
 
     <TextView
         android:id="@+id/content"
@@ -21,5 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+        android:fontFamily="@font/overlock_sc"
         android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>

@@ -29,17 +29,18 @@
         <!--</androidx.appcompat.widget.Toolbar>-->
         <TextClock
             android:id="@+id/main_clock"
-            android:textStyle="bold"
-            tools:text="123"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/overlock_sc"
             android:gravity="center"
+            android:textColor="@color/black"
             android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            tools:text="123" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

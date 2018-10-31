@@ -10,7 +10,7 @@ class BoringApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         if(BuildConfig.DEBUG){
-            Log.addInterceptor( LogCatInterceptor() )
+//            Log.addInterceptor( LogCatInterceptor() )
             ComponentLog.enableComponentsChangesLogging(this)
         }else{
             Log.addInterceptor( BoringLogInterceptor())
