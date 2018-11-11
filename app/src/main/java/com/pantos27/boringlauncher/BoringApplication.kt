@@ -1,6 +1,7 @@
 package com.pantos27.boringlauncher
 
 import android.app.Application
+import com.pantos27.boringlauncher.data.AppDatabase
 import ua.at.tsvetkov.util.ComponentLog
 import ua.at.tsvetkov.util.Log
 import ua.at.tsvetkov.util.interceptor.LogCatInterceptor
@@ -17,6 +18,9 @@ class BoringApplication: Application() {
         }
 
         Log.setLogOutlined(false)
+
+        val appDatabase = AppDatabase.getInstance(this)
+
     }
 
     override fun onTerminate() {

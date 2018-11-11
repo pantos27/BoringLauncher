@@ -44,3 +44,22 @@ object AppExecutors{
     }
 
 }
+
+/**
+ * Utility method to run blocks on a dedicated background thread, used for io/database work.
+ */
+fun runOnIoThread(f: () -> Unit) {
+    AppExecutors.diskIO.execute(f)
+}
+/**
+ * Utility method to run blocks on a dedicated background thread, used for network work.
+ */
+fun runOnNetworkThread(f: () -> Unit) {
+    AppExecutors.networkIO.execute(f)
+}
+/**
+ * Utility method to run blocks on the main ui thread.
+ */
+fun runOnMainThread(f: () -> Unit) {
+    AppExecutors.mainThread.execute(f)
+}
