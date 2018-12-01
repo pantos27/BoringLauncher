@@ -19,16 +19,11 @@ package com.pantos27.boringlauncher.data
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import com.pantos27.boringlauncher.SomeTestData
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.*
-import org.junit.Assert.assertNull
 
 class LauncherItemDaoTest {
     private var database: AppDatabase? = null
     private var launcherItemDao: LauncherItemDao? = null
-    private var testGardenPlantingId: Long = 0
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -39,7 +34,7 @@ class LauncherItemDaoTest {
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         launcherItemDao = database?.launcherItemDao()
 
-        launcherItemDao?.insertAll(SomeTestData.items)
+        launcherItemDao?.insertAll(SomeTestDataInt.items)
     }
 
     @After fun closeDb() {
@@ -53,7 +48,7 @@ class LauncherItemDaoTest {
 
         val allItemsSortedByLabel = database?.launcherItemDao()?.getAllItemsSortedByLabel()
 
-        val list = SomeTestData.items.sortedBy { it.label }
+        val list = SomeTestDataInt.items.sortedBy { it.label }
 
         allItemsSortedByLabel?.forEachIndexed { index, launcherItem ->
             println("${launcherItem.id} $launcherItem")

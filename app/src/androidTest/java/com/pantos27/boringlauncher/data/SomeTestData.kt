@@ -1,8 +1,6 @@
-package com.pantos27.boringlauncher
+package com.pantos27.boringlauncher.data
 
-import com.pantos27.boringlauncher.data.LauncherItem
-
-object SomeTestData {
+object SomeTestDataInt {
 
     val app1 = LauncherItem("BaseFook", "com.basefook.app","com.basefook.app.MainActivity")
     val app2 = LauncherItem("Zasham", "com.zasham.app","com.zasham.app.MainActivity")

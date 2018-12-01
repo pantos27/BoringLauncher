@@ -13,6 +13,9 @@ interface LauncherItemDao {
     @Query("SELECT * FROM launcher_items ORDER BY label")
     fun getAllItemsSortedByLabel() : List<LauncherItem>
 
+    @Query("SELECT * FROM launcher_items ORDER BY times_used DESC, last_used DESC")
+    fun getAllItemsSortedByLastUsed() : List<LauncherItem>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(items: List<LauncherItem>)
 }

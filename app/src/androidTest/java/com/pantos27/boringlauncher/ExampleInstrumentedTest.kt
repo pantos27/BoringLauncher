@@ -7,21 +7,22 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.pantos27.boringlauncher.data.AppDatabase
 import com.pantos27.boringlauncher.data.LauncherItemDao
+import com.pantos27.boringlauncher.data.SomeTestDataInt
 import org.junit.After
 
 import org.junit.Test
-import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
+import org.junit.runner.RunWith
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-//@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     private lateinit var database: AppDatabase
     private lateinit var launcherItemDao: LauncherItemDao
@@ -36,7 +37,7 @@ class ExampleInstrumentedTest {
         launcherItemDao = database.launcherItemDao()
 
         // Insert plants in non-alphabetical order to test that results are sorted by name
-        launcherItemDao.insertAll(SomeTestData.items)
+        launcherItemDao.insertAll(SomeTestDataInt.items)
     }
 
     @After
@@ -56,7 +57,7 @@ class ExampleInstrumentedTest {
     @Test fun testSortOrder(){
         val allItemsSortedByLabel = database.launcherItemDao().getAllItemsSortedByLabel()
 
-        val list = SomeTestData.items.sortedBy { it.label }
+        val list = SomeTestDataInt.items.sortedBy { it.label }
 
         allItemsSortedByLabel.forEachIndexed { index, launcherItem ->
             println(launcherItem)

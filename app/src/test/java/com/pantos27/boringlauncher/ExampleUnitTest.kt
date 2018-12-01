@@ -2,6 +2,7 @@ package com.pantos27.boringlauncher
 
 import android.os.Bundle
 import com.pantos27.boringlauncher.data.LauncherItem
+import com.pantos27.boringlauncher.data.SomeTestData
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -30,9 +31,19 @@ class ExampleUnitTest {
     }
 
     @Test fun equalsTest(){
-        val app = LauncherItem(SomeTestData.app2.label,SomeTestData.app2.pkg,SomeTestData.app2.mainClass)
+        val app = LauncherItem(SomeTestData.app2.label, SomeTestData.app2.pkg, SomeTestData.app2.mainClass)
         assert(SomeTestData.app2 == app)
         assertFalse(SomeTestData.app1.equals(null))
         assertFalse(SomeTestData.app1.equals("something"))
+    }
+
+    object SomeTestData {
+
+        val app1 = LauncherItem("BaseFook", "com.basefook.app","com.basefook.app.MainActivity")
+        val app2 = LauncherItem("Zasham", "com.zasham.app","com.zasham.app.MainActivity")
+        val app3 = LauncherItem("Cmail", "com.boogle.cmail","com.boogle.cmail.MainActivity")
+
+        val items = listOf(app1, app2, app3)
+
     }
 }
