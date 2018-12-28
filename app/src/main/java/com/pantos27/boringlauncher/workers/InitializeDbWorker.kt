@@ -8,10 +8,9 @@ import ua.at.tsvetkov.util.Log
 
 class InitializeDbWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
     override fun doWork(): Result {
-        Log.d("doWork")
-
         getLauncherActivities(applicationContext.packageManager)
-        return Result.SUCCESS
+
+        return Result.success()
     }
 
 }

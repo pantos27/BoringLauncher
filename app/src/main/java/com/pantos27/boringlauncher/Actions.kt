@@ -12,8 +12,10 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.pantos27.boringlauncher.data.AppInfo
 import android.provider.Settings
+import android.widget.Toast
 import com.pantos27.boringlauncher.utils.printBundle
 import ua.at.tsvetkov.util.Log
+import java.lang.Exception
 import java.util.*
 
 
@@ -29,9 +31,16 @@ fun getActivityIcon(context: Context, packageName: String, activityName: String)
 fun startMainActivityForPackage(context: Context,pkg: String,bundle: Bundle? = null) {
     Log.d("startMainActivityForPackage $pkg")
     val launchIntent = context.packageManager.getLaunchIntentForPackage(pkg)
-    startActivity(context,launchIntent,bundle)
+    try {
+        launchIntent?.let { startActivity(context,it,bundle) } ?: showToast(context)
+    }catch (e: Exception){
+        Log.e(e)
+        showToast(context)
+    }
 }
-
+fun showToast(context: Context){
+    Toast.makeText(context,R.string.unable_to_launch_application,Toast.LENGTH_SHORT).show()
+}
 fun getLauncherActivities(pm: PackageManager) : List<AppInfo>{
     val i = Intent(Intent.ACTION_MAIN, null)
     i.addCategory(Intent.CATEGORY_LAUNCHER)

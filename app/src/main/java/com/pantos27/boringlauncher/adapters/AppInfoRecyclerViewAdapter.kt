@@ -16,10 +16,10 @@ import kotlinx.android.synthetic.main.fragment_appinfo.view.*
 /**
  *
  */
-class MyAppInfoRecyclerViewAdapter(
+class AppInfoRecyclerViewAdapter(
         private val mValues: List<AppInfo>,
         private val mListener: OnListFragmentInteractionListener?)
-    : RecyclerView.Adapter<MyAppInfoRecyclerViewAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<AppInfoRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private val mOnClickLongListener: View.OnLongClickListener

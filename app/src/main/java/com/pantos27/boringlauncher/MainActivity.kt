@@ -1,6 +1,8 @@
 package com.pantos27.boringlauncher
 
 
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +44,27 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
                     .setAction("Action", null).show()
         }
 
+        registerPackageUpdateReceivers()
+    }
+
+    private fun registerPackageUpdateReceivers() {
+
+        IntentFilter().run {
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addAction(Intent.ACTION_PACKAGE_REPLACED)
+            addDataScheme("package")
+            registerReceiver(PackageActionReceiver,this)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterPackageUpdateReceivers()
+    }
+
+    private fun unregisterPackageUpdateReceivers() {
+        unregisterReceiver(PackageActionReceiver)
     }
 
 

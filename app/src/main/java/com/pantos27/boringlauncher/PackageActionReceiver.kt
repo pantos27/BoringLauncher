@@ -7,7 +7,7 @@ import com.pantos27.boringlauncher.utils.TAG
 import com.pantos27.boringlauncher.utils.printBundle
 import ua.at.tsvetkov.util.Log
 
-class PackageActionReceiver : BroadcastReceiver() {
+object PackageActionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG,"onReceive: action: ${intent.action}")

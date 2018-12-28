@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pantos27.boringlauncher.adapters.MyAppInfoRecyclerViewAdapter
+import com.pantos27.boringlauncher.adapters.AppInfoRecyclerViewAdapter
 import com.pantos27.boringlauncher.data.AppInfo
 import ua.at.tsvetkov.util.Log
 
@@ -46,7 +46,7 @@ class AppInfoListFragment : Fragment() {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
                 Log.d("getLauncherActivities-pre")
-                adapter = MyAppInfoRecyclerViewAdapter(getLauncherActivities(context.packageManager), listener)
+                adapter = AppInfoRecyclerViewAdapter(getLauncherActivities(context.packageManager), listener)
                 Log.d("getLauncherActivities-post")
             }
         }    }
