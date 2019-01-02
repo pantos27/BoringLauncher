@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pantos27.boringlauncher.adapters.AppInfoRecyclerViewAdapter
+import com.pantos27.boringlauncher.data.AppDatabase
 import com.pantos27.boringlauncher.data.AppInfo
+import com.pantos27.boringlauncher.data.LauncherItem
 import ua.at.tsvetkov.util.Log
 
 
@@ -46,10 +49,20 @@ class AppInfoListFragment : Fragment() {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
                 Log.d("getLauncherActivities-pre")
-                adapter = AppInfoRecyclerViewAdapter(getLauncherActivities(context.packageManager), listener)
+                val db = AppDatabase.getInstance(context)
+                val liveData = when (mode){
+
+                    Mode.Favs -> db.launcherItemDao().getAllItemsSortedByLabel()
+                    Mode.Lex -> db.launcherItemDao().getAllItemsSortedByLabel()
+                    Mode.Recent -> db.launcherItemDao().getAllItemsSortedByLastUsed()
+                }
+                liveData.observe(this@AppInfoListFragment, Observer {list->
+                    adapter = AppInfoRecyclerViewAdapter(list, listener)
+                })
                 Log.d("getLauncherActivities-post")
             }
-        }    }
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -78,8 +91,8 @@ class AppInfoListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentClick(item: AppInfo?)
-        fun onListFragmentLongPress(item: AppInfo?)
+        fun onListFragmentClick(item: LauncherItem?)
+        fun onListFragmentLongPress(item: LauncherItem?)
     }
 
     companion object {

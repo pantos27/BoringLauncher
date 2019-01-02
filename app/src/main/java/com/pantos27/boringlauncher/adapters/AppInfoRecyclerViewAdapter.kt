@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.pantos27.boringlauncher.AppInfoListFragment.OnListFragmentInteractionListener
 import com.pantos27.boringlauncher.R
-import com.pantos27.boringlauncher.data.AppInfo
+import com.pantos27.boringlauncher.data.LauncherItem
 
 import kotlinx.android.synthetic.main.fragment_appinfo.view.*
 
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_appinfo.view.*
  *
  */
 class AppInfoRecyclerViewAdapter(
-        private val mValues: List<AppInfo>,
+        private val mValues: List<LauncherItem>,
         private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<AppInfoRecyclerViewAdapter.ViewHolder>() {
 
@@ -26,14 +26,14 @@ class AppInfoRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as AppInfo
+            val item = v.tag as LauncherItem
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentClick(item)
         }
 
         mOnClickLongListener = View.OnLongClickListener { v ->
-            val item = v.tag as AppInfo
+            val item = v.tag as LauncherItem
             mListener?.onListFragmentLongPress(item)
             //return -handled
             true
@@ -50,7 +50,7 @@ class AppInfoRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.label
-        holder.mContentView.text = item.packageName
+        holder.mContentView.text = item.pkg
 
         with(holder.mView) {
             tag = item

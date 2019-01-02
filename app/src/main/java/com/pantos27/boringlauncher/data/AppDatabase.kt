@@ -28,7 +28,7 @@ import com.pantos27.boringlauncher.workers.InitializeDbWorker
 /**
  * The Room database for this app
  */
-@Database(entities = [LauncherItem::class], version = 1, exportSchema = false)
+@Database(entities = [LauncherItem::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun launcherItemDao(): LauncherItemDao
 

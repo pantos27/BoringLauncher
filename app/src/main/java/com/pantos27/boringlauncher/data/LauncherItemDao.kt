@@ -15,7 +15,7 @@ interface LauncherItemDao {
     fun getAllItemsSortedByLabel() : LiveData<List<LauncherItem>>
 
     @Query("SELECT * FROM launcher_items ORDER BY times_used DESC, last_used DESC")
-    fun getAllItemsSortedByLastUsed() : List<LauncherItem>
+    fun getAllItemsSortedByLastUsed() : LiveData<List<LauncherItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(items: List<LauncherItem>)

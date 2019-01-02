@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -13,6 +14,8 @@ import androidx.core.content.ContextCompat.startActivity
 import com.pantos27.boringlauncher.data.AppInfo
 import android.provider.Settings
 import android.widget.Toast
+import androidx.core.content.IntentCompat
+import com.pantos27.boringlauncher.data.LauncherItem
 import com.pantos27.boringlauncher.utils.printBundle
 import ua.at.tsvetkov.util.Log
 import java.lang.Exception
@@ -31,6 +34,7 @@ fun getActivityIcon(context: Context, packageName: String, activityName: String)
 fun startMainActivityForPackage(context: Context,pkg: String,bundle: Bundle? = null) {
     Log.d("startMainActivityForPackage $pkg")
     val launchIntent = context.packageManager.getLaunchIntentForPackage(pkg)
+    launchIntent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     try {
         launchIntent?.let { startActivity(context,it,bundle) } ?: showToast(context)
     }catch (e: Exception){
@@ -38,18 +42,22 @@ fun startMainActivityForPackage(context: Context,pkg: String,bundle: Bundle? = n
         showToast(context)
     }
 }
+
+fun startActivity(item: LauncherItem){
+    val intent = Intent()
+}
 fun showToast(context: Context){
     Toast.makeText(context,R.string.unable_to_launch_application,Toast.LENGTH_SHORT).show()
 }
-fun getLauncherActivities(pm: PackageManager) : List<AppInfo>{
+fun getLauncherActivities(pm: PackageManager) : List<ResolveInfo>{
+    Log.d("getLauncherActivities")
     val i = Intent(Intent.ACTION_MAIN, null)
     i.addCategory(Intent.CATEGORY_LAUNCHER)
-    Log.d("getLauncherActivities")
 
-    return pm.queryIntentActivities(i, 0).asSequence()
-            .onEach { printAppInfo(pm.getPackageInfo(it.activityInfo.packageName,PackageManager.GET_META_DATA)) }
+    return pm.queryIntentActivities(i, PackageManager.MATCH_ALL).asSequence()
+//            .onEach { printAppInfo(pm.getPackageInfo(it.activityInfo.packageName,PackageManager.GET_META_DATA)) }
             .filterNot { it.activityInfo.packageName==BuildConfig.APPLICATION_ID }
-            .map { AppInfo(it.loadLabel(pm), it.activityInfo.packageName, it.activityInfo.loadIcon(pm)) }
+//            .map { AppInfo(it.loadLabel(pm), it.activityInfo.packageName, it.activityInfo.loadIcon(pm)) }
             .toList()
 }
 

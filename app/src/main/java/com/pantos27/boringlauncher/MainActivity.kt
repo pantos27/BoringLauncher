@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.pantos27.boringlauncher.data.AppInfo
+import com.pantos27.boringlauncher.data.LauncherItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
@@ -96,17 +97,17 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
         return super.onKeyUp(keyCode, event)
     }
 
-    override fun onListFragmentClick(item: AppInfo?) {
+    override fun onListFragmentClick(item: LauncherItem?) {
         Log.d("onListFragmentClick: $item")
         item?.let {
-            startMainActivityForPackage(this,item.packageName)
+            startMainActivityForPackage(this,item.pkg)
         }
     }
-    override fun onListFragmentLongPress(item: AppInfo?) {
+    override fun onListFragmentLongPress(item: LauncherItem?) {
         Log.d("onListFragmentLongPress $item")
         //todo: open context menu
         item?.let {
-            gotToAppSettingsActivity(this,item.packageName)
+            gotToAppSettingsActivity(this,item.pkg)
         }
     }
 
@@ -119,9 +120,12 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
         override fun getItem(position: Int): Fragment {
             Log.d("position: $position")
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position==0) return AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Lex)
-            return PlaceholderFragment.newInstance(position + 1)
+            return when(position) {
+                0 -> AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Lex)
+                1 -> AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Recent)
+                2 -> AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Favs)
+                else -> AppInfoListFragment.newInstance(AppInfoListFragment.Mode.Lex)
+            }
         }
 
         override fun getCount(): Int {
