@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), AppInfoListFragment.OnListFragmentInte
     override fun onListFragmentClick(item: LauncherItem?) {
         Log.d("onListFragmentClick: $item")
         item?.let {
-            startMainActivityForPackage(this,item.pkg)
+            startLauncherItem(this,item)
         }
     }
     override fun onListFragmentLongPress(item: LauncherItem?) {

@@ -19,7 +19,6 @@ class BoringApplication: Application() {
 
         Log.setLogOutlined(false)
 
-        val appDatabase = AppDatabase.getInstance(this)
 
     }
 

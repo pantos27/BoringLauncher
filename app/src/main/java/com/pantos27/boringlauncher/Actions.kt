@@ -43,8 +43,12 @@ fun startMainActivityForPackage(context: Context,pkg: String,bundle: Bundle? = n
     }
 }
 
-fun startActivity(item: LauncherItem){
-    val intent = Intent()
+fun startLauncherItem(context: Context,item: LauncherItem){
+    val intent = Intent(Intent.ACTION_MAIN)
+    intent.addCategory(Intent.CATEGORY_LAUNCHER)
+    intent.setClassName(item.pkg,item.mainClass)
+
+    context.startActivity(intent)
 }
 fun showToast(context: Context){
     Toast.makeText(context,R.string.unable_to_launch_application,Toast.LENGTH_SHORT).show()

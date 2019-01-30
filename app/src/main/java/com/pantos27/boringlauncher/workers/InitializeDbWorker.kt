@@ -10,12 +10,16 @@ import ua.at.tsvetkov.util.Log
 
 class InitializeDbWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
     override fun doWork(): Result {
+        Log.d("doWork")
         val packageManager = this.applicationContext.packageManager
         val launcherActivities = getLauncherActivities(packageManager)
 
         val packages = launcherActivities.map { it.activityInfo.packageName }.toSet()
 
         val list = launcherActivities.map {
+            if (it.activityInfo.name.contains("Pinyin")){
+                Log.d("Pinyin is ${it.activityInfo.packageName}")
+            }
             LauncherItem(it.loadLabel(packageManager).toString(),
                     it.activityInfo.packageName,
                     it.activityInfo.name)

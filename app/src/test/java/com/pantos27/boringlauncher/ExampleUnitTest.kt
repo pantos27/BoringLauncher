@@ -2,7 +2,6 @@ package com.pantos27.boringlauncher
 
 import android.os.Bundle
 import com.pantos27.boringlauncher.data.LauncherItem
-import com.pantos27.boringlauncher.data.SomeTestData
 import org.junit.Test
 
 import org.junit.Assert.*

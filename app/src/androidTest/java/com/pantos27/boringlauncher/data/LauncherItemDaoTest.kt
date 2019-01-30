@@ -19,7 +19,10 @@ package com.pantos27.boringlauncher.data
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
+import androidx.test.core.app.ApplicationProvider
+import com.pantos27.boringlauncher.BoringApplication
 import org.junit.*
+import ua.at.tsvetkov.util.Log
 
 class LauncherItemDaoTest {
     private var database: AppDatabase? = null
@@ -28,21 +31,24 @@ class LauncherItemDaoTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Before fun createDb() {
+    @Before
+    fun createDb() {
         println("createDB")
-        val context = InstrumentationRegistry.getTargetContext()
+        val context = ApplicationProvider.getApplicationContext<BoringApplication>()
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         launcherItemDao = database?.launcherItemDao()
 
         launcherItemDao?.insertAll(SomeTestDataInt.items)
     }
 
-    @After fun closeDb() {
+    @After
+    fun closeDb() {
         println("closeDB")
         database?.close()
     }
 
-    @Test fun testGetGardenPlantings() {
+    @Test
+    fun testGetGardenPlantings() {
         println("testGetGardenPlantings")
         database ?: return
 
@@ -50,54 +56,73 @@ class LauncherItemDaoTest {
 
         val list = SomeTestDataInt.items.sortedBy { it.label }
 
-//        allItemsSortedByLabel?.forEachIndexed { index, launcherItem ->
-//            println("${launcherItem.id} $launcherItem")
-//            Assert.assertEquals(launcherItem.label, list[index].label)
-//        }
+        allItemsSortedByLabel?.value?.forEachIndexed { index, launcherItem ->
+            println("${launcherItem.id} $launcherItem")
+            Assert.assertEquals(launcherItem.label, list[index].label)
+        } ?: assert(false)
+    }
+    @Test
+    fun testUpdateTimesUsed(){
+        val launcherItems = database?.launcherItemDao()?.getAllItems()
+        val launcherItem = launcherItems?.get(0)
+        launcherItem?.let { item ->
+
+
+            Log.d("after ${item.id}")
+            Log.d(item.toString())
+
+            database?.launcherItemDao()?.updateTimesUsed(item.id)
+            Log.d("all")
+
+            database?.launcherItemDao()?.getAllItems()?.find { it.id == item.id }.let {
+                Assert.assertNotNull(it)
+
+                Assert.assertEquals(item.timesUsed + 1, it?.timesUsed)
+            }
+        } ?: assert(false)
+    }
+    @Test
+    fun testUpdateLastUsed(){
+        val launcherItems = database?.launcherItemDao()?.getAllItems()
+        val launcherItem = launcherItems?.get(0)
+        launcherItem?.let { item ->
+
+            Log.d(item.toString())
+
+            database?.launcherItemDao()?.updateLastUsed(item.id)
+
+            database?.launcherItemDao()?.getAllItems()?.find { it.id == item.id }.let {
+                Assert.assertNotNull(it)
+                Assert.assertTrue(it?.lastUsed!! >item.lastUsed)
+            }
+        } ?: assert(false)
     }
 
-//    @Test
-//    fun testGetGardenPlanting() {
-//        assertThat(
-//            getValue(gardenPlantingDao.getGardenPlanting(testGardenPlantingId)),
-//            equalTo(testGardenPlanting)
-//        )
-//    }
-//
-//    @Test fun testDeleteGardenPlanting() {
-//        val gardenPlanting2 = GardenPlanting(
-//                testPlants[1].plantId,
-//                testCalendar,
-//                testCalendar
-//        ).also { it.gardenPlantingId = 2 }
-//        gardenPlantingDao.insertGardenPlanting(gardenPlanting2)
-//        assertThat(getValue(gardenPlantingDao.getGardenPlantings()).size, equalTo(2))
-//        gardenPlantingDao.deleteGardenPlanting(gardenPlanting2)
-//        assertThat(getValue(gardenPlantingDao.getGardenPlantings()).size, equalTo(1))
-//    }
-//
-//    @Test fun testGetGardenPlantingForPlant() {
-//        assertThat(getValue(gardenPlantingDao.getGardenPlantingForPlant(testPlant.plantId)),
-//                equalTo(testGardenPlanting))
-//    }
-//
-//    @Test fun testGetGardenPlantingForPlant_notFound() {
-//        assertNull(getValue(gardenPlantingDao.getGardenPlantingForPlant(testPlants[2].plantId)))
-//    }
-//
-//    @Test fun testGetPlantAndGardenPlantings() {
-//        val plantAndGardenPlantings = getValue(gardenPlantingDao.getPlantAndGardenPlantings())
-//        assertThat(plantAndGardenPlantings.size, equalTo(3))
-//
-//        /**
-//         * Only the [testPlant] has been planted, and thus has an associated [GardenPlanting]
-//         */
-//        assertThat(plantAndGardenPlantings[0].plant, equalTo(testPlant))
-//        assertThat(plantAndGardenPlantings[0].gardenPlantings.size, equalTo(1))
-//        assertThat(plantAndGardenPlantings[0].gardenPlantings[0], equalTo(testGardenPlanting))
-//
-//        // The other plants in the database have not been planted and thus have no GardenPlantings
-//        assertThat(plantAndGardenPlantings[1].gardenPlantings.size, equalTo(0))
-//        assertThat(plantAndGardenPlantings[2].gardenPlantings.size, equalTo(0))
-//    }
+    @Test
+    fun testUpdateMany(){
+        val launcherItems = database?.launcherItemDao()?.getAllItems()
+        launcherItems?.get(0)?.label = "Zero"
+        val launcherItem = launcherItems?.get(0)
+        launcherItem?.let { item ->
+
+
+            Log.d("after ${item.id}")
+            Log.d(item.toString())
+
+            database?.launcherItemDao()?.updateTimesUsed(item.id)
+            Log.d("all")
+
+            database?.launcherItemDao()?.getAllItems()?.find { it.id == item.id }.let {
+                Assert.assertNotNull(it)
+
+                Assert.assertEquals(item.timesUsed + 1, it?.timesUsed)
+            }
+        } ?: assert(false)
+    }
+    @Test
+    fun testIllegalValue(){
+        database?.launcherItemDao()?.updateTimesUsed(10)
+
+    }
+
 }
